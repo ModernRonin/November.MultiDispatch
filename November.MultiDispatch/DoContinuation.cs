@@ -2,13 +2,13 @@
 
 namespace November.MultiDispatch
 {
-    public class DoContinuation<TLeft, TRight>
+    public class DoContinuation<TCommonBase, TLeft, TRight>
     {
-        readonly IDoubleReceiver mDispatcher;
+        readonly DoubleDispatcher<TCommonBase> mDispatcher;
         readonly Func<TLeft, bool> mLeftPredicate;
         readonly Func<TRight, bool> mRightPredicate;
         internal DoContinuation(
-            IDoubleReceiver dispatcher,
+            DoubleDispatcher<TCommonBase> dispatcher,
             Func<TLeft, bool> leftPredicate,
             Func<TRight, bool> rightPredicate)
         {

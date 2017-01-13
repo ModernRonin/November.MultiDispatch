@@ -4,7 +4,7 @@ using static November.MultiDispatch.Predicates;
 
 namespace November.MultiDispatch
 {
-    public class DoubleDispatcher<TCommonBase> : IDoubleReceiver, IDoubleDispatcher<TCommonBase>
+    public class DoubleDispatcher<TCommonBase> : IDoubleDispatcher<TCommonBase>
     {
         readonly Dictionary<Type, Dictionary<Type, CallContext>> mHandlers =
             new Dictionary<Type, Dictionary<Type, CallContext>>();
@@ -13,22 +13,6 @@ namespace November.MultiDispatch
         /// has been no specific handler defined.
         /// </summary>
         public Action<TCommonBase, TCommonBase> FallbackHandler { get; set; }
-        public void AddHandler(
-            Type leftType,
-            Type rightType,
-            Func<object, bool> leftPredicate,
-            Func<object, bool> rightPredicate,
-            Action<object, object> action)
-        {
-            if (!mHandlers.ContainsKey(leftType)) mHandlers[leftType] = new Dictionary<Type, CallContext>();
-            var leftHandlers = mHandlers[leftType];
-            leftHandlers[rightType] = new CallContext
-            {
-                Handler = action,
-                LeftPredicate = leftPredicate,
-                RightPredicate = rightPredicate
-            };
-        }
         /// <summary>
         /// Fluent definition of the left argument type. Must be followed by <see cref="LeftContinuation{TCommonBase,TLeft}.OnRight{TRight}()"/>
         /// and <see cref="DoContinuation{TLeft,TRight}.Do"/>.
@@ -95,6 +79,22 @@ namespace November.MultiDispatch
                 if (!leftHandlers.ContainsKey(rightType)) InvokeFallbackHandler(left, right);
                 else leftHandlers[rightType].Invoke(left, right);
             }
+        }
+        internal void AddHandler(
+            Type leftType,
+            Type rightType,
+            Func<object, bool> leftPredicate,
+            Func<object, bool> rightPredicate,
+            Action<object, object> action)
+        {
+            if (!mHandlers.ContainsKey(leftType)) mHandlers[leftType] = new Dictionary<Type, CallContext>();
+            var leftHandlers = mHandlers[leftType];
+            leftHandlers[rightType] = new CallContext
+            {
+                Handler = action,
+                LeftPredicate = leftPredicate,
+                RightPredicate = rightPredicate
+            };
         }
         void InvokeFallbackHandler(TCommonBase left, TCommonBase right)
         {
