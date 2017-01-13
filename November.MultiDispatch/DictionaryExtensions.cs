@@ -11,5 +11,11 @@ namespace November.MultiDispatch
             or();
             return null;
         }
+        public static TValue GetOrAdd<TKey, TValue>(this IDictionary<TKey, TValue> self, TKey key) where TValue : new()
+        {
+            if (!self.ContainsKey(key))
+                self[key]= new TValue();
+            return self[key];
+        }
     }
 }

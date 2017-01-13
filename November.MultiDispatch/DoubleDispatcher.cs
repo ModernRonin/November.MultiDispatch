@@ -85,9 +85,7 @@ namespace November.MultiDispatch
             Func<object, bool> rightPredicate,
             Action<object, object> action)
         {
-            if (!mHandlers.ContainsKey(leftType)) mHandlers[leftType] = new Dictionary<Type, CallContext>();
-            var leftHandlers = mHandlers[leftType];
-            leftHandlers[rightType] = new CallContext
+            mHandlers.GetOrAdd(leftType)[rightType] = new CallContext
             {
                 Handler = action,
                 LeftPredicate = leftPredicate,
