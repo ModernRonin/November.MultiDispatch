@@ -6,29 +6,6 @@ namespace November.MultiDispatch.Tests
     [TestFixture]
     public class DoubleDispatcherTests
     {
-        [Test] // TODO: remove
-        public void If_No_Fitting_Handler_Defined_Calls_FallbackHandler()
-        {
-            var wasFallbackCalled = false;
-            var underTest = new DoubleDispatcher { FallbackHandler = (l, r) => wasFallbackCalled = true};
-            underTest.OnLeft<int>().OnRight<string>().Do((c, v) => { Assert.Fail(); });
-            underTest.OnLeft<int>().OnRight<int>().Do((a, m) => { Assert.Fail(); });
-            underTest.Dispatch(true, "alpha");
-
-            wasFallbackCalled.Should().BeTrue();
-        }
-        [Test] // TODO: remove
-        public void Picks_Right_Handler_If_Defined()
-        {
-            var underTest = new DoubleDispatcher { FallbackHandler = (l, r) => Assert.Fail()};
-            underTest.OnLeft<int>().OnRight<string>().Do((c, v) => { Assert.Fail(); });
-            var wasRightComboPicked = false;
-            underTest.OnLeft<int>().OnRight<int>().Do((a, m) => { wasRightComboPicked = true; });
-
-            underTest.Dispatch(3, 4);
-
-            wasRightComboPicked.Should().BeTrue();
-        }
         [Test]
         public void Dispatch_Picks_The_Right_Handler_If_Handlers_Were_Registered_With_On()
         {
