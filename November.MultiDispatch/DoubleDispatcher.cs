@@ -1,18 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
+using static November.MultiDispatch.Predicates;
 
 namespace November.MultiDispatch
 {
     public class DoubleDispatcher<TCommonBase> : IDoubleReceiver
     {
-        readonly Dictionary<Type, Dictionary<Type, Action<object, object>>> mHandlers =
-            new Dictionary<Type, Dictionary<Type, Action<object, object>>>();
+        readonly Dictionary<Type, Dictionary<Type, CallContext>> mHandlers =
+            new Dictionary<Type, Dictionary<Type, CallContext>>();
         public Action<TCommonBase, TCommonBase> FallbackHandler { get; set; }
-        public void AddHandler(Type leftType, Type rightType, Action<object, object> action)
+        public void AddHandler(
+            Type leftType,
+            Type rightType,
+            Func<object, bool> leftPredicate,
+            Func<object, bool> rightPredicate,
+            Action<object, object> action)
         {
-            if (!mHandlers.ContainsKey(leftType)) mHandlers[leftType] = new Dictionary<Type, Action<object, object>>();
+            if (!mHandlers.ContainsKey(leftType)) mHandlers[leftType] = new Dictionary<Type, CallContext>();
             var leftHandlers = mHandlers[leftType];
-            leftHandlers[rightType] = action;
+            leftHandlers[rightType] = new CallContext
+            {
+                Handler = action,
+                LeftPredicate = leftPredicate,
+                RightPredicate = rightPredicate
+            };
         }
         public LeftContinuation<TCommonBase, TLeft> OnLeft<TLeft>() where TLeft : TCommonBase
         {
@@ -22,15 +33,17 @@ namespace November.MultiDispatch
         {
             return new LeftContinuation<TCommonBase, TLeft>(this, predicate);
         }
-        public void On<TLeft, TRight>(Action<TLeft, TRight> handler) where TLeft:TCommonBase where TRight:TCommonBase
+        public void On<TLeft, TRight>(Action<TLeft, TRight> handler) where TLeft : TCommonBase
+            where TRight : TCommonBase
         {
-            AddHandler(typeof(TLeft), typeof(TRight), handler.ToUntypedAction());
+            AddHandler(typeof(TLeft), typeof(TRight), AlwaysTrue<object>(), AlwaysTrue<object>(), handler.ToUntyped());
         }
-        public RightContinuation<TCommonBase, TRight> OnRight<TRight>() where TRight:TCommonBase
+        public RightContinuation<TCommonBase, TRight> OnRight<TRight>() where TRight : TCommonBase
         {
             return new RightContinuation<TCommonBase, TRight>(this);
         }
-        public RightContinuation<TCommonBase, TRight> OnRight<TRight>(Func<TRight, bool> predicate) where TRight:TCommonBase
+        public RightContinuation<TCommonBase, TRight> OnRight<TRight>(Func<TRight, bool> predicate)
+            where TRight : TCommonBase
         {
             return new RightContinuation<TCommonBase, TRight>(this, predicate);
         }
@@ -43,7 +56,7 @@ namespace November.MultiDispatch
             {
                 var leftHandlers = mHandlers[leftType];
                 if (!leftHandlers.ContainsKey(rightType)) InvokeFallbackHandler(left, right);
-                else leftHandlers[rightType](left, right);
+                else leftHandlers[rightType].Invoke(left, right);
             }
         }
         void InvokeFallbackHandler(TCommonBase left, TCommonBase right)
