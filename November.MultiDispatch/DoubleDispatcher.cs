@@ -18,6 +18,10 @@ namespace November.MultiDispatch
         {
             return new LeftContinuation<TCommonBase, TLeft>(this);
         }
+        public LeftContinuation<TCommonBase, TLeft> OnLeft<TLeft>(Func<TLeft, bool> predicate) where TLeft : TCommonBase
+        {
+            return new LeftContinuation<TCommonBase, TLeft>(this, predicate);
+        }
         public void On<TLeft, TRight>(Action<TLeft, TRight> handler) where TLeft:TCommonBase where TRight:TCommonBase
         {
             AddHandler(typeof(TLeft), typeof(TRight), handler.ToUntypedAction());
@@ -25,6 +29,10 @@ namespace November.MultiDispatch
         public RightContinuation<TCommonBase, TRight> OnRight<TRight>() where TRight:TCommonBase
         {
             return new RightContinuation<TCommonBase, TRight>(this);
+        }
+        public RightContinuation<TCommonBase, TRight> OnRight<TRight>(Func<TRight, bool> predicate) where TRight:TCommonBase
+        {
+            return new RightContinuation<TCommonBase, TRight>(this, predicate);
         }
         public void Dispatch(TCommonBase left, TCommonBase right)
         {
