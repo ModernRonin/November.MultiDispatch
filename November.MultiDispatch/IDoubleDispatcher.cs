@@ -49,8 +49,10 @@ namespace November.MultiDispatch
         /// <param name="predicate">check that needs to be passed for the handler to be called</param>
         RightContinuation<TCommonBase, TRight> OnRight<TRight>(Func<TRight, bool> predicate) where TRight : TCommonBase;
         /// <summary>
-        /// Dispatch a combination of arguments.
+        /// Dispatch a combination of arguments. If no handler matching the arguments can be found,
+        /// <see cref="FallbackHandler"/> is used.
         /// </summary>
+        /// <exception cref="InvalidOperationException">thrown if no matching handlers are found and <see cref="FallbackHandler"/> is not set</exception>
         void Dispatch(TCommonBase left, TCommonBase right);
     }
 }

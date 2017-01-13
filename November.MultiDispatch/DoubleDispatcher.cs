@@ -66,8 +66,10 @@ namespace November.MultiDispatch
             return new RightContinuation<TCommonBase, TRight>(this, predicate);
         }
         /// <summary>
-        /// Dispatch a combination of arguments.
+        /// Dispatch a combination of arguments. If no handler matching the arguments can be found,
+        /// <see cref="FallbackHandler"/> is used.
         /// </summary>
+        /// <exception cref="InvalidOperationException">thrown if no matching handlers are found and <see cref="FallbackHandler"/> is not set</exception>
         public void Dispatch(TCommonBase left, TCommonBase right)
         {
             var leftType = left.GetType();
