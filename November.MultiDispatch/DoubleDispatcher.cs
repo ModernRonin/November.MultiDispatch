@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace November.MultiDispatch
 {
-    public class DoubleDispatcher
+    public class DoubleDispatcher : IDoubleReceiver
     {
         readonly Dictionary<Type, Dictionary<Type, Action<object, object>>> mHandlers =
             new Dictionary<Type, Dictionary<Type, Action<object, object>>>();
@@ -39,7 +39,7 @@ namespace November.MultiDispatch
                     $"You must either take care to define handlers for all permutations that might come in; or define '{nameof(FallbackHandler)}'.");
             FallbackHandler(left, right);
         }
-        internal void AddHandler(Type leftType, Type rightType, Action<object, object> action)
+        public void AddHandler(Type leftType, Type rightType, Action<object, object> action)
         {
             if (!mHandlers.ContainsKey(leftType)) mHandlers[leftType] = new Dictionary<Type, Action<object, object>>();
             var leftHandlers = mHandlers[leftType];

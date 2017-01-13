@@ -2,8 +2,8 @@
 {
     public class RightContinuation<TRight>
     {
-        readonly DoubleDispatcher mDispatcher;
-        public RightContinuation(DoubleDispatcher dispatcher)
+        readonly IDoubleReceiver mDispatcher;
+        internal RightContinuation(IDoubleReceiver dispatcher)
         {
             mDispatcher = dispatcher;
         }

@@ -4,8 +4,8 @@ namespace November.MultiDispatch
 {
     public class DoContinuation<TLeft, TRight>
     {
-        readonly DoubleDispatcher mDispatcher;
-        public DoContinuation(DoubleDispatcher dispatcher)
+        readonly IDoubleReceiver mDispatcher;
+        internal DoContinuation(IDoubleReceiver dispatcher)
         {
             mDispatcher = dispatcher;
         }
