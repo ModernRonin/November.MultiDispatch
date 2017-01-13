@@ -15,7 +15,7 @@ namespace November.MultiDispatch
         public Action<TCommonBase, TCommonBase> FallbackHandler { get; set; }
         /// <summary>
         /// Fluent definition of the left argument type. Must be followed by <see cref="LeftContinuation{TCommonBase,TLeft}.OnRight{TRight}()"/>
-        /// and <see cref="DoContinuation{TLeft,TRight}.Do"/>.
+        /// and <see cref="DoContinuation{TCommonBase, TLeft,TRight}.Do"/>.
         /// </summary>
         /// <typeparam name="TLeft">the type of the left argument</typeparam>
         public LeftContinuation<TCommonBase, TLeft> OnLeft<TLeft>() where TLeft : TCommonBase
@@ -26,7 +26,7 @@ namespace November.MultiDispatch
         /// Fluent definition of the left argument type with an additional check that must be passed for the
         /// handler to be called.
         /// Must be followed by <see cref="LeftContinuation{TCommonBase,TLeft}.OnRight{TRight}()"/>
-        /// and <see cref="DoContinuation{TLeft,TRight}.Do"/>.
+        /// and <see cref="DoContinuation{TCommonBase, TLeft,TRight}.Do"/>.
         /// </summary>
         /// <typeparam name="TLeft">the type of the left argument</typeparam>
         /// <param name="predicate">check that needs to be passed for the handler to be called</param>
@@ -45,7 +45,7 @@ namespace November.MultiDispatch
         /// <summary>
         /// Fluent definition of the right argument type.
         /// Must be followed by <see cref="RightContinuation{TCommonBase,TRight}.OnLeft{TLeft}()"/>
-        /// and <see cref="DoContinuation{TLeft,TRight}.Do"/>.
+        /// and <see cref="DoContinuation{TCommonBase, TLeft,TRight}.Do"/>.
         /// </summary>
         /// <typeparam name="TRight">the type of the right argument</typeparam>
         public RightContinuation<TCommonBase, TRight> OnRight<TRight>() where TRight : TCommonBase
@@ -56,7 +56,7 @@ namespace November.MultiDispatch
         /// Fluent definition of the right argument type with an additional check that must be passed for the
         /// handler to be called.
         /// Must be followed by <see cref="RightContinuation{TCommonBase,TRight}.OnLeft{TLeft}()"/>
-        /// and <see cref="DoContinuation{TLeft,TRight}.Do"/>.
+        /// and <see cref="DoContinuation{TCommonBase, TLeft,TRight}.Do"/>.
         /// </summary>
         /// <typeparam name="TRight">the type of the right argument</typeparam>
         /// <param name="predicate">check that needs to be passed for the handler to be called</param>

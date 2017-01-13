@@ -14,7 +14,7 @@ namespace November.MultiDispatch
             mPredicate = predicate;
         }
         /// <summary>
-        /// Fluently specify the left argument type. To be followed by <see cref="DoContinuation{TLeft,TRight}.Do"/>.
+        /// Fluently specify the left argument type. To be followed by <see cref="DoContinuation{TCommonBase, TLeft,TRight}.Do"/>.
         /// </summary>
         /// <typeparam name="TLeft">the type of the left argument</typeparam>
         public DoContinuation<TCommonBase, TLeft, TRight> OnLeft<TLeft>() where TLeft : TCommonBase
@@ -23,7 +23,7 @@ namespace November.MultiDispatch
         }
         /// <summary>
         /// Fluently specify the left argument type with an additional check that needs to be passed.
-        /// To be followed by <see cref="DoContinuation{TLeft,TRight}.Do"/>.
+        /// To be followed by <see cref="DoContinuation{TCommonBase, TLeft,TRight}.Do"/>.
         /// </summary>
         /// <typeparam name="TLeft">the type of the left argument</typeparam>
         /// <param name="leftPredicate">the check to be passed</param>
