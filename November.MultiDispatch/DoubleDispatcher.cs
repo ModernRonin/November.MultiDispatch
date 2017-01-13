@@ -4,7 +4,7 @@ using static November.MultiDispatch.Predicates;
 
 namespace November.MultiDispatch
 {
-    public class DoubleDispatcher<TCommonBase> : IDoubleReceiver
+    public class DoubleDispatcher<TCommonBase> : IDoubleReceiver, IDoubleDispatcher<TCommonBase>
     {
         readonly Dictionary<Type, Dictionary<Type, CallContext>> mHandlers =
             new Dictionary<Type, Dictionary<Type, CallContext>>();
