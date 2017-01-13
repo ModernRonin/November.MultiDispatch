@@ -27,7 +27,8 @@ namespace November.MultiDispatch
         /// </summary>
         /// <typeparam name="TLeft">the type of the left argument</typeparam>
         /// <param name="leftPredicate">the check to be passed</param>
-        public DoContinuation<TCommonBase, TLeft, TRight> OnLeft<TLeft>(Func<TLeft, bool> leftPredicate) where TLeft : TCommonBase
+        public DoContinuation<TCommonBase, TLeft, TRight> OnLeft<TLeft>(Func<TLeft, bool> leftPredicate)
+            where TLeft : TCommonBase
         {
             return new DoContinuation<TCommonBase, TLeft, TRight>(mDispatcher, leftPredicate, mPredicate);
         }
