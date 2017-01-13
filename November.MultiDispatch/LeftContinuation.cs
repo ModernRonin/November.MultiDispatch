@@ -7,9 +7,9 @@ namespace November.MultiDispatch
         {
             mDispatcher = dispatcher;
         }
-        public RightContinuation<TLeft, TRight> OnRight<TRight>()
+        public DoContinuation<TLeft, TRight> OnRight<TRight>()
         {
-            return new RightContinuation<TLeft, TRight>(mDispatcher);
+            return new DoContinuation<TLeft, TRight>(mDispatcher);
         }
     }
 }

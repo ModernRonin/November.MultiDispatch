@@ -16,6 +16,10 @@ namespace November.MultiDispatch
         {
             AddHandler(typeof(TLeft), typeof(TRight), handler.ToUntypedAction());
         }
+        public RightContinuation<TRight> OnRight<TRight>()
+        {
+            return new RightContinuation<TRight>(this);
+        }
         public void Dispatch(object left, object right)
         {
             var leftType = left.GetType();

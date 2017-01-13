@@ -1,24 +1,15 @@
-﻿using System;
-
-namespace November.MultiDispatch
+﻿namespace November.MultiDispatch
 {
-    public class RightContinuation<TLeft, TRight>
+    public class RightContinuation<TRight>
     {
         readonly DoubleDispatcher mDispatcher;
         public RightContinuation(DoubleDispatcher dispatcher)
         {
             mDispatcher = dispatcher;
         }
-        public void Do(Action<TLeft, TRight> handler)
+        public DoContinuation<TLeft, TRight> OnLeft<TLeft>()
         {
-            mDispatcher.AddHandler(typeof(TLeft), typeof(TRight), handler.ToUntypedAction());
+            return new DoContinuation<TLeft, TRight>(mDispatcher);
         }
-    }
-
-    public static class ActionExtensions
-    {
-        public static Action<object, object> ToUntypedAction<TLeft, TRight>(this Action<TLeft, TRight> self)
-            => (l, r) => self((TLeft)l, (TRight)r);
-
     }
 }
