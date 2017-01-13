@@ -11,7 +11,14 @@ namespace November.MultiDispatch
         }
         public void Do(Action<TLeft, TRight> handler)
         {
-            mDispatcher.AddHandler(typeof(TLeft), typeof(TRight), ToUntypedAction(handler));
+            mDispatcher.AddHandler(typeof(TLeft), typeof(TRight), handler.ToUntypedAction());
         }
+    }
+
+    public static class ActionExtensions
+    {
+        public static Action<object, object> ToUntypedAction<TLeft, TRight>(this Action<TLeft, TRight> self)
+            => (l, r) => self((TLeft)l, (TRight)r);
+
     }
 }
