@@ -72,15 +72,11 @@ namespace November.MultiDispatch
         /// <exception cref="InvalidOperationException">thrown if no matching handlers are found and <see cref="FallbackHandler"/> is not set</exception>
         public void Dispatch(TCommonBase left, TCommonBase right)
         {
+            void invokeFallback() => InvokeFallbackHandler(left, right);
             var leftType = left.GetType();
             var rightType = right.GetType();
-            if (!mHandlers.ContainsKey(leftType)) InvokeFallbackHandler(left, right);
-            else
-            {
-                var leftHandlers = mHandlers[leftType];
-                if (!leftHandlers.ContainsKey(rightType)) InvokeFallbackHandler(left, right);
-                else leftHandlers[rightType].Invoke(left, right);
-            }
+
+            mHandlers.GetOr(leftType, invokeFallback)?.GetOr(rightType, invokeFallback)?.Invoke(left, right);
         }
         internal void AddHandler(
             Type leftType,
