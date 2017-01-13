@@ -4,13 +4,13 @@ using NUnit.Framework;
 namespace November.MultiDispatch.Tests
 {
     [TestFixture]
-    public class DispatcherTests
+    public class DoubleDispatcherTests
     {
         [Test]
         public void If_No_Fitting_Handler_Defined_Calls_FallbackHandler()
         {
             var wasFallbackCalled = false;
-            var dispatcher = new Dispatcher {FallbackHandler = (l, r) => wasFallbackCalled = true};
+            var dispatcher = new DoubleDispatcher {FallbackHandler = (l, r) => wasFallbackCalled = true};
             dispatcher.OnLeft<int>().OnRight<string>().Do((c, v) => { Assert.Fail(); });
             dispatcher.OnLeft<int>().OnRight<int>().Do((a, m) => { Assert.Fail(); });
             dispatcher.Dispatch(true, "alpha");
@@ -20,7 +20,7 @@ namespace November.MultiDispatch.Tests
         [Test]
         public void Picks_Right_Handler_If_Defined()
         {
-            var dispatcher = new Dispatcher {FallbackHandler = (l, r) => Assert.Fail()};
+            var dispatcher = new DoubleDispatcher {FallbackHandler = (l, r) => Assert.Fail()};
 
             dispatcher.OnLeft<int>().OnRight<string>().Do((c, v) => { Assert.Fail(); });
             var wasRightComboPicked = false;
@@ -35,7 +35,7 @@ namespace November.MultiDispatch.Tests
         {
             var wasRightComboPicked = false;
 
-            var dispatcher = new Dispatcher();
+            var dispatcher = new DoubleDispatcher();
             dispatcher.On<int, string>((c, v) => { Assert.Fail(); });
             dispatcher.On<int, int>((a, m) => { wasRightComboPicked = true; });
             dispatcher.Dispatch(3, 4);

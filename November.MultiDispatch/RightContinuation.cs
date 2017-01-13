@@ -4,8 +4,8 @@ namespace November.MultiDispatch
 {
     public class RightContinuation<TLeft, TRight>
     {
-        readonly Dispatcher mDispatcher;
-        public RightContinuation(Dispatcher dispatcher)
+        readonly DoubleDispatcher mDispatcher;
+        public RightContinuation(DoubleDispatcher dispatcher)
         {
             mDispatcher = dispatcher;
         }
