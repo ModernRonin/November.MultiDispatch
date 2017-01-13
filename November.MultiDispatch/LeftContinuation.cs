@@ -13,13 +13,23 @@ namespace November.MultiDispatch
             mDispatcher = dispatcher;
             mPredicate = predicate;
         }
+        /// <summary>
+        /// Fluently specify the right argument type. To be followed by <see cref="DoContinuation{TLeft,TRight}.Do"/>.
+        /// </summary>
+        /// <typeparam name="TRight">the type of the right argument</typeparam>
         public DoContinuation<TLeft, TRight> OnRight<TRight>() where TRight : TCommonBase
         {
             return new DoContinuation<TLeft, TRight>(mDispatcher, mPredicate, _ => true);
         }
-        public DoContinuation<TLeft, TRight> OnRight<TRight>(Func<TRight, bool> predicate) where TRight : TCommonBase
+        /// <summary>
+        /// Fluently specify the right argument type with an additional check that needs to be passed.
+        /// To be followed by <see cref="DoContinuation{TLeft,TRight}.Do"/>.
+        /// </summary>
+        /// <typeparam name="TRight">the type of the right argument</typeparam>
+        /// <param name="rightPredicate">the check to be passed</param>
+        public DoContinuation<TLeft, TRight> OnRight<TRight>(Func<TRight, bool> rightPredicate) where TRight : TCommonBase
         {
-            return new DoContinuation<TLeft, TRight>(mDispatcher, mPredicate, predicate);
+            return new DoContinuation<TLeft, TRight>(mDispatcher, mPredicate, rightPredicate);
         }
     }
 }

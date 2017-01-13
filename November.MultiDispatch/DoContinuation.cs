@@ -16,6 +16,10 @@ namespace November.MultiDispatch
             mLeftPredicate = leftPredicate;
             mRightPredicate = rightPredicate;
         }
+        /// <summary>
+        /// Specifies the handler
+        /// </summary>
+        /// <param name="handler"></param>
         public void Do(Action<TLeft, TRight> handler)
         {
             mDispatcher.AddHandler(typeof(TLeft),
