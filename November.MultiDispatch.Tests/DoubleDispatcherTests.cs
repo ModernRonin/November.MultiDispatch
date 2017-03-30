@@ -71,5 +71,10 @@ namespace November.MultiDispatch.Tests
 
             called.Should().Be(16);
         }
+        [Test]
+        public void Dispatch_Picks_The_Right_Handler_With_Left_Being_Set_To_RootType()
+        {
+            var underTest = new DoubleDispatcher<object>();
+        }
     }
 }
