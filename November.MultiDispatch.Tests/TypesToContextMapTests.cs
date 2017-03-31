@@ -51,15 +51,15 @@ namespace November.MultiDispatch.Tests
             underTest.GetFor(typeof(ISomeInterface), typeof(DerivedImplementation)).Should().BeSameAs(context);
         }
         [Test]
-        public void GetFor_Returns_Most_Specific_Type_Match()
+        public void GetFor_Returns_Context_For_First_Match()
         {
             var underTest = new TypesToContextMap();
             var a = new CallContext();
             var b = new CallContext();
             var c = new CallContext();
-            underTest.Add(typeof(ISomeInterface), typeof(AnotherImplementation), a);
-            underTest.Add(typeof(AnotherImplementation), typeof(AnotherImplementation), b);
             underTest.Add(typeof(DerivedImplementation), typeof(DerivedImplementation), c);
+            underTest.Add(typeof(AnotherImplementation), typeof(AnotherImplementation), b);
+            underTest.Add(typeof(ISomeInterface), typeof(AnotherImplementation), a);
 
             underTest.GetFor(typeof(DerivedImplementation), typeof(DerivedImplementation)).Should().BeSameAs(c);
             underTest.GetFor(typeof(DerivedImplementation), typeof(AnotherImplementation)).Should().BeSameAs(b);

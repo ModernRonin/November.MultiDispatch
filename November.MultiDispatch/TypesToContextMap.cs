@@ -9,6 +9,7 @@ namespace November.MultiDispatch
         readonly List<Record> mRecords = new List<Record>();
         public CallContext GetFor(Type left, Type right)
         {
+            // TODO: add caching
             var leftTypes = left.GetAssignmentTargetTypes();
             var rightTypes = right.GetAssignmentTargetTypes();
             var pairs = leftTypes.SelectMany(l => rightTypes.Select(r => new Pair(l, r)));
@@ -42,7 +43,7 @@ namespace November.MultiDispatch
             }
             public CallContext Context { get; }
             public int CalculateTypeDistanceFrom(Type left, Type right)
-                => 1000 * left.GetTypeDistanceFrom(Left) + right.GetTypeDistanceFrom(Right);
+                => 1000 * left.GetTypeDistanceFromAncestor(Left) + right.GetTypeDistanceFromAncestor(Right);
         }
     }
 }
