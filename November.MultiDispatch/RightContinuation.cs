@@ -3,7 +3,7 @@ using static November.MultiDispatch.Predicates;
 
 namespace November.MultiDispatch
 {
-    public class RightContinuation<TCommonBase, TRight> where TRight : TCommonBase
+    public sealed class RightContinuation<TCommonBase, TRight> where TRight : TCommonBase
     {
         readonly DoubleDispatcher<TCommonBase> mDispatcher;
         readonly Func<TRight, bool> mPredicate;

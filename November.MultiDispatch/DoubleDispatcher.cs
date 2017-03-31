@@ -3,13 +3,26 @@ using static November.MultiDispatch.Predicates;
 
 namespace November.MultiDispatch
 {
-    public class DoubleDispatcher<TCommonBase> : IDoubleDispatcher<TCommonBase>
+    /// <summary>
+    /// An implementation of <see cref="IDoubleDispatcher{TCommonBase}"/>.
+    /// In this implementation, the order in which handlers are defined, is relevant:
+    /// the first match wins, in calls to <see cref="Dispatch"/>.
+    /// </summary>
+    /// <typeparam name="TCommonBase"></typeparam>
+    public sealed class DoubleDispatcher<TCommonBase> : IDoubleDispatcher<TCommonBase>
     {
         readonly ITypesToHandlerMap mTypesToHandlers;
+        /// <summary>
+        /// Constructs an instance with a custom storage/lookup mechanism for type-pairs to handlers.
+        /// </summary>
+        /// <param name="typesToHandlers"></param>
         public DoubleDispatcher(ITypesToHandlerMap typesToHandlers)
         {
             mTypesToHandlers = typesToHandlers;
         }
+        /// <summary>
+        /// Constructs an instance with the default storage/lookup mechanism for type-pairs to handlers.
+        /// </summary>
         public DoubleDispatcher() : this(new TypesToContextMap()) {}
         /// <summary>
         /// This is called if <see cref="Dispatch"/> is called for a combination of argument types for which there
@@ -70,7 +83,9 @@ namespace November.MultiDispatch
         }
         /// <summary>
         /// Dispatch a combination of arguments. If no handler matching the arguments can be found,
-        /// <see cref="FallbackHandler"/> is used.
+        /// <see cref="FallbackHandler"/> is used. If multiple handlers are found -for example, because there
+        /// were two calls to <see cref="On{TLeft,TRight}"/>, one with concrete types and one with interfaces implemented by these concrete types-, 
+        /// then the first registered handler is used. 
         /// </summary>
         /// <exception cref="InvalidOperationException">thrown if no matching handlers are found and <see cref="FallbackHandler"/> is not set</exception>
         public void Dispatch(TCommonBase left, TCommonBase right)

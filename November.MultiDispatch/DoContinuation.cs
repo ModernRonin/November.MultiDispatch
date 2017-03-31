@@ -2,7 +2,7 @@
 
 namespace November.MultiDispatch
 {
-    public class DoContinuation<TCommonBase, TLeft, TRight> where TLeft : TCommonBase where TRight : TCommonBase
+    public sealed class DoContinuation<TCommonBase, TLeft, TRight> where TLeft : TCommonBase where TRight : TCommonBase
     {
         readonly DoubleDispatcher<TCommonBase> mDispatcher;
         readonly Func<TLeft, bool> mLeftPredicate;
