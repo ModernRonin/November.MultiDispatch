@@ -32,5 +32,13 @@ namespace November.MultiDispatch
         {
             return new DoContinuation<TCommonBase, TLeft, TRight>(mDispatcher, leftPredicate, mPredicate);
         }
+        /// <summary>
+        /// Specify what to do if the right argument type is <see cref="TRight"/> and the left one is any assignable to <see cref="TCommonBase"/>
+        /// </summary>
+        /// <param name="handler"></param>
+        public void Do(Action<TCommonBase, TRight> handler)
+        {
+            mDispatcher.AddHandler(AlwaysTrue<TCommonBase>(), mPredicate, handler);
+        }
     }
 }
