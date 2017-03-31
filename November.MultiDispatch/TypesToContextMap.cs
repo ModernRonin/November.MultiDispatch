@@ -14,10 +14,7 @@ namespace November.MultiDispatch
             var rightTypes = right.GetAssignmentTargetTypes();
             var pairs = leftTypes.SelectMany(l => rightTypes.Select(r => new Pair(l, r)));
             var candidates =
-                mRecords.Where(r => pairs.Any(p => p.Left == r.Left && p.Right == r.Right))
-                    .Select(r => new {Record = r, TypeDistance = r.CalculateTypeDistanceFrom(left, right)})
-                    .OrderBy(r => r.TypeDistance)
-                    .Select(r => r.Record.Context);
+                mRecords.Where(r => pairs.Any(p => p.Left == r.Left && p.Right == r.Right)).Select(r => r.Context);
 
             return candidates.FirstOrDefault();
         }
@@ -42,8 +39,6 @@ namespace November.MultiDispatch
                 Context = context;
             }
             public CallContext Context { get; }
-            public int CalculateTypeDistanceFrom(Type left, Type right)
-                => 1000 * left.GetTypeDistanceFromAncestor(Left) + right.GetTypeDistanceFromAncestor(Right);
         }
     }
 }
