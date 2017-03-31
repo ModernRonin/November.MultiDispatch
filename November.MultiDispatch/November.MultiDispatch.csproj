@@ -1,6 +1,35 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
   <PropertyGroup>
     <TargetFramework>netstandard1.1</TargetFramework>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+    <Version>1.1.0</Version>
+    <Authors>November Design &amp; Development k.s.</Authors>
+    <Company>November Design &amp; Development k.s.</Company>
+    <PackageProjectUrl>https://github.com/ModernRonin/November.MultiDispatch</PackageProjectUrl>
+    <PackageLicenseUrl>https://opensource.org/licenses/Apache-2.0</PackageLicenseUrl>
+    <Description>If you need something like a Visitor for visiting two type hierarchies in one call, this is for you.
+Short version:
+
+dispatcher.On&lt;string, int&gt;(MyHandler);
+
+dispatcher.On&lt;bool, int&gt;(OtherHandler);
+
+
+dispatcher.Dispatch(true, 13);
+
+
+
+Also feature guard conditions, an alternative fluent API and a fallback handler.</Description>
+    <PackageReleaseNotes>1.0.0 initial release
+1.1.0 * you can influence which of multiple matching handlers is used via the order in which you register them
+         * you can define that you're interested in matching only the left or only the right side</PackageReleaseNotes>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>bin\Debug\netstandard1.1\November.MultiDispatch.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>bin\Release\netstandard1.1\November.MultiDispatch.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <EmbeddedResource Include="**\*.resx" />

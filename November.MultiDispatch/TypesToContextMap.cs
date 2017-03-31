@@ -4,9 +4,15 @@ using System.Linq;
 
 namespace November.MultiDispatch
 {
+    /// <summary>
+    /// A concrete implementation of <see cref="ITypesToHandlerMap"/>.
+    /// The order of calls to <see cref="Add"/> defines which of multiple matches
+    /// for any given type-pair is returned for calls to <see cref="GetFor"/>: first wins.
+    /// </summary>
     public class TypesToContextMap : ITypesToHandlerMap
     {
         readonly List<Record> mRecords = new List<Record>();
+        /// <inheritdoc />
         public CallContext GetFor(Type left, Type right)
         {
             // TODO: add caching
@@ -18,6 +24,7 @@ namespace November.MultiDispatch
 
             return candidates.FirstOrDefault();
         }
+        /// <inheritdoc />
         public void Add(Type leftType, Type rightType, CallContext context)
             => mRecords.Add(new Record(leftType, rightType, context));
 

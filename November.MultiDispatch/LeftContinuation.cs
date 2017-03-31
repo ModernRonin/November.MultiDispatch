@@ -3,6 +3,11 @@ using static November.MultiDispatch.Predicates;
 
 namespace November.MultiDispatch
 {
+    /// <summary>
+    /// Part of the fluent interface of <see cref="DoubleDispatcher{TCommonBase}"/>.
+    /// </summary>
+    /// <typeparam name="TCommonBase"></typeparam>
+    /// <typeparam name="TLeft"></typeparam>
     public sealed class LeftContinuation<TCommonBase, TLeft> where TLeft : TCommonBase
     {
         readonly DoubleDispatcher<TCommonBase> mDispatcher;
@@ -22,7 +27,7 @@ namespace November.MultiDispatch
             return new DoContinuation<TCommonBase, TLeft, TRight>(mDispatcher, mPredicate, _ => true);
         }
         /// <summary>
-        /// Specify what to do if the left argument type is <see cref="TLeft"/> and the right one is any assignable to <see cref="TCommonBase"/>
+        /// Specify what to do if the left argument type is <typeparamref name="TLeft"/> and the right one is any assignable to <typeparamref name="TCommonBase"/>
         /// </summary>
         /// <param name="handler"></param>
         public void Do(Action<TLeft, TCommonBase> handler)

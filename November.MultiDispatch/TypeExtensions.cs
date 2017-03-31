@@ -5,8 +5,16 @@ using System.Reflection;
 
 namespace November.MultiDispatch
 {
+    /// <summary>
+    /// Extension methods for <see cref="Type"/>.
+    /// </summary>
     public static class TypeExtensions
     {
+        /// <summary>
+        /// Returns all types that <paramref name="self"/> can be assigned to.
+        /// </summary>
+        /// <param name="self"></param>
+        /// <returns></returns>
         public static IEnumerable<Type> GetAssignmentTargetTypes(this Type self)
         {
             var typeInfo = self.GetTypeInfo();

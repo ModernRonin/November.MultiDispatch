@@ -7,11 +7,10 @@ namespace November.MultiDispatch
     /// </summary>
     public sealed class CallContext
     {
-        internal CallContext() { }
-        public Action<object, object> Handler { get; set; }
-        public Func<object, bool> LeftPredicate { get; set; }
-        public Func<object, bool> RightPredicate { get; set; }
-        public void Invoke(object lhs, object rhs)
+        internal Action<object, object> Handler { get; set; }
+        internal Func<object, bool> LeftPredicate { get; set; }
+        internal Func<object, bool> RightPredicate { get; set; }
+        internal void Invoke(object lhs, object rhs)
         {
             if (!LeftPredicate(lhs)) return;
             if (!RightPredicate(rhs)) return;

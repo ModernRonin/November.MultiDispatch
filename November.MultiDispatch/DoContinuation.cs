@@ -2,6 +2,12 @@
 
 namespace November.MultiDispatch
 {
+    /// <summary>
+    /// Part of the fluent interface of <see cref="DoubleDispatcher{TCommonBase}"/>.
+    /// </summary>
+    /// <typeparam name="TCommonBase"></typeparam>
+    /// <typeparam name="TLeft"></typeparam>
+    /// <typeparam name="TRight"></typeparam>
     public sealed class DoContinuation<TCommonBase, TLeft, TRight> where TLeft : TCommonBase where TRight : TCommonBase
     {
         readonly DoubleDispatcher<TCommonBase> mDispatcher;
