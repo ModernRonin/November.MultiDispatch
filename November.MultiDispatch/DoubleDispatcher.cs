@@ -1,13 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
 using static November.MultiDispatch.Predicates;
 
 namespace November.MultiDispatch
 {
     public class DoubleDispatcher<TCommonBase> : IDoubleDispatcher<TCommonBase>
     {
-        readonly Dictionary<Type, Dictionary<Type, CallContext>> mHandlers =
-            new Dictionary<Type, Dictionary<Type, CallContext>>();
+        readonly ITypesToHandlerMap mTypesToHandlers;
+        public DoubleDispatcher(ITypesToHandlerMap typesToHandlers)
+        {
+            mTypesToHandlers = typesToHandlers;
+        }
+        public DoubleDispatcher() : this(new TypesToContextMap()) {}
         /// <summary>
         /// This is called if <see cref="Dispatch"/> is called for a combination of argument types for which there
         /// has been no specific handler defined.
@@ -76,21 +79,31 @@ namespace November.MultiDispatch
             var leftType = left.GetType();
             var rightType = right.GetType();
 
-            mHandlers.GetOr(leftType, invokeFallback)?.GetOr(rightType, invokeFallback)?.Invoke(left, right);
+            var context = mTypesToHandlers.GetFor(leftType, rightType);
+            if (null == context) invokeFallback();
+            else context.Invoke(left, right);
         }
-        internal void AddHandler(
+        internal void AddHandler<TLeft, TRight>(
+            Func<TLeft, bool> leftPredicate,
+            Func<TRight, bool> rightPredicate,
+            Action<TLeft, TRight> action) where TLeft : TCommonBase where TRight : TCommonBase
+        {
+            AddHandler(typeof(TLeft),
+                typeof(TRight),
+                leftPredicate.ToUntyped(),
+                rightPredicate.ToUntyped(),
+                action.ToUntyped());
+        }
+        void AddHandler(
             Type leftType,
             Type rightType,
             Func<object, bool> leftPredicate,
             Func<object, bool> rightPredicate,
             Action<object, object> action)
         {
-            mHandlers.GetOrAdd(leftType)[rightType] = new CallContext
-            {
-                Handler = action,
-                LeftPredicate = leftPredicate,
-                RightPredicate = rightPredicate
-            };
+            mTypesToHandlers.Add(leftType,
+                rightType,
+                new CallContext {Handler = action, LeftPredicate = leftPredicate, RightPredicate = rightPredicate});
         }
         void InvokeFallbackHandler(TCommonBase left, TCommonBase right)
         {

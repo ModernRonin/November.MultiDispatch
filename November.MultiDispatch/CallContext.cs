@@ -2,7 +2,7 @@
 
 namespace November.MultiDispatch
 {
-    internal class CallContext
+    public class CallContext
     {
         public Action<object, object> Handler { get; set; }
         public Func<object, bool> LeftPredicate { get; set; }

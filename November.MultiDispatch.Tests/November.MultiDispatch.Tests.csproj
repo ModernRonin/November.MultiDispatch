@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="DoubleDispatcherTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TypesToContextMapTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\November.MultiDispatch\November.MultiDispatch.csproj">

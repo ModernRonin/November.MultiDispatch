@@ -75,6 +75,29 @@ namespace November.MultiDispatch.Tests
         public void Dispatch_Picks_The_Right_Handler_With_Left_Being_Set_To_RootType()
         {
             var underTest = new DoubleDispatcher<object>();
+            var called = 0;
+            underTest.OnLeft<object>().OnRight<int>().Do((l, r) => called= 13);
+            underTest.FallbackHandler = (l, r) => called = 17;
+
+            underTest.Dispatch(new object(), 7);
+
+            called.Should().Be(13);
+        }
+        interface ISomeInterface { }
+        class SomeInheritor : ISomeInterface { }
+        class AnotherInheritor : ISomeInterface { }
+
+        [Test]
+        public void Regression_Case_0001()
+        {
+            var underTest= new DoubleDispatcher<ISomeInterface>();
+            var called = 0;
+            underTest.OnLeft<SomeInheritor>().Do((l,r)=> called=13);
+            underTest.FallbackHandler = (l, r) => called = 17;
+
+            underTest.Dispatch(new SomeInheritor(), new SomeInheritor());
+
+            called.Should().Be(13);
         }
     }
 }

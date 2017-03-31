@@ -21,6 +21,10 @@ namespace November.MultiDispatch
         {
             return new DoContinuation<TCommonBase, TLeft, TRight>(mDispatcher, mPredicate, _ => true);
         }
+        public void Do(Action<TLeft, TCommonBase> handler)
+        {
+            mDispatcher.AddHandler(mPredicate, AlwaysTrue<TCommonBase>(), handler);
+        }
         /// <summary>
         /// Fluently specify the right argument type with an additional check that needs to be passed.
         /// To be followed by <see cref="DoContinuation{TCommonBase, TLeft,TRight}.Do"/>.

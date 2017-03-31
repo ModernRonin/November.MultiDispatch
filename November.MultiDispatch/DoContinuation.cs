@@ -2,7 +2,7 @@
 
 namespace November.MultiDispatch
 {
-    public class DoContinuation<TCommonBase, TLeft, TRight>
+    public class DoContinuation<TCommonBase, TLeft, TRight> where TLeft : TCommonBase where TRight : TCommonBase
     {
         readonly DoubleDispatcher<TCommonBase> mDispatcher;
         readonly Func<TLeft, bool> mLeftPredicate;
@@ -22,11 +22,7 @@ namespace November.MultiDispatch
         /// <param name="handler"></param>
         public void Do(Action<TLeft, TRight> handler)
         {
-            mDispatcher.AddHandler(typeof(TLeft),
-                typeof(TRight),
-                mLeftPredicate.ToUntyped(),
-                mRightPredicate.ToUntyped(),
-                handler.ToUntyped());
+            mDispatcher.AddHandler(mLeftPredicate, mRightPredicate, handler);
         }
     }
 }
