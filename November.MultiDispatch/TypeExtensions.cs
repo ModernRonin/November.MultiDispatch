@@ -19,5 +19,9 @@ namespace November.MultiDispatch
             result.Add(self);
             return result.Distinct();
         }
+        public static int GetTypeDistanceFrom(this Type self, this Type other)
+        {
+            return 0;
+        }
     }
 }
