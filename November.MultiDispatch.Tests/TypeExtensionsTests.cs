@@ -18,7 +18,50 @@ namespace November.MultiDispatch.Tests
 
         interface IThirdInterface { }
         class DerivedImplementation : AnotherImplementation, IThirdInterface {}
-
+        class Deepest : DerivedImplementation { }
+        [Test]
+        public void GetTypeDistance_Of_Directly_Derived_Interface_Returns_1()
+        {
+            typeof(ISomeInterface).GetTypeDistanceFrom(typeof(IDerivedInterface)).Should().Be(1);
+        }
+        [Test]
+        public void GetTypeDistance_To_Base_Class_Returns_1()
+        {
+            typeof(DerivedImplementation).GetTypeDistanceFrom(typeof(AnotherImplementation)).Should().Be(1);
+        }
+        [Test]
+        public void GetTypeDistance_To_Implemented_Interface_Returns_1()
+        {
+            typeof(DerivedImplementation).GetTypeDistanceFrom(typeof(IThirdInterface)).Should().Be(1);
+        }
+        [Test]
+        public void GetTypeDistance_To_Grandfather_Class_Returns_2()
+        {
+            typeof(Deepest).GetTypeDistanceFrom(typeof(AnotherImplementation)).Should().Be(2);
+        }
+        [Test]
+        public void GetTypeDistance_In_Complex_Hierarchy()
+        {
+            var deepest = typeof(Deepest);
+            deepest.GetTypeDistanceFrom(typeof(ISomeInterface)).Should().Be(4);
+        }
+        [Test]
+        public void GetTypeDistanceFrom_Object_And_Object_Returns_0()
+        {
+            typeof(object).GetTypeDistanceFrom(typeof(object)).Should().Be(0);
+        }
+        [Test]
+        public void GetTypeDistanceFrom_String_And_Object_Returns_1()
+        {
+            typeof(string).GetTypeDistanceFrom(typeof(object)).Should().Be(1);
+        }
+        [Test]
+        public void GetTypeDistance_Is_Symmetrical()
+        {
+            var objectType = typeof(object);
+            var stringType = typeof(string);
+            stringType.GetTypeDistanceFrom(objectType).Should().Be(objectType.GetTypeDistanceFrom(stringType));
+        }
         [Test]
         public void GetAssignmentTargetTypes_Of_Class()
         {
